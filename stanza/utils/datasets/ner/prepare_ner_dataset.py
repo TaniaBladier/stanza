@@ -368,6 +368,15 @@ def process_nchlt(paths, short_name):
     convert_bio_to_json(base_output_path, base_output_path, short_name)
 
 
+def process_vi_vlsp(paths, short_name):
+    """
+    TODO: until we are "eating our own dog food" in terms of tokenizing the VI dataset, this is very incomplete.
+    """
+    base_input_path = os.path.join(paths["NERBASE"], short_name)
+    base_output_path = paths["NER_DATA_DIR"]
+    convert_bio_to_json(base_input_path, base_output_path, short_name)
+
+
 def main(dataset_name):
     paths = default_paths.get_default_paths()
 
@@ -393,6 +402,8 @@ def main(dataset_name):
         process_bsnlp(paths, dataset_name)
     elif dataset_name.endswith("_nchlt"):
         process_nchlt(paths, dataset_name)
+    elif dataset_name.endswith("vi_vlsp"):
+        process_vi_vlsp(paths, dataset_name)
     else:
         raise ValueError(f"dataset {dataset_name} currently not handled")
 
