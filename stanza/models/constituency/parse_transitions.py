@@ -163,9 +163,9 @@ class Shift(Transition):
 
     def is_legal(self, state, model):
         """
-        Disallow shifting when the word queue is empty
+        Disallow shifting when the word queue is empty or there are no opens to eventually eat this word
         """
-        return not state.empty_word_queue()
+        return state.num_opens > 0 and not state.empty_word_queue()
 
     def __repr__(self):
         return "Shift"
@@ -326,6 +326,9 @@ class CloseConstituent(Transition):
         if isinstance(model.get_top_transition(state.transitions), OpenConstituent):
             return False
         if state.num_opens <= 0:
+            return False
+        if state.num_opens <= 1 and not state.empty_word_queue():
+            # don't close the last open until all words have been used
             return False
         return True
 
